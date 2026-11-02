@@ -1,9 +1,7 @@
-import { logout } from '../lib/session';
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
-import { Menu, MessageSquareHeart, History, Gift, UserRound, Shield, LogOut, FileText, WifiOff } from 'lucide-react';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@project/components/ui/sheet';
+import { MessageSquareHeart, History, Gift, UserRound, WifiOff } from 'lucide-react';
 import { cn } from '@project/components/lib/utils';
 import { Logo } from './Logo';
 import { fa, useMe } from '../lib/me';
@@ -40,14 +38,19 @@ function Balance({ bal }: { bal: number }) {
 function BottomNav() {
   return (
     <nav className="pb-safe fixed inset-x-0 bottom-0 z-40 md:hidden">
-      <div className="mx-3 mb-2 grid grid-cols-4 rounded-[1.6rem] border border-border/80 bg-card/90 p-1.5 shadow-[0_12px_40px_-12px_rgb(120_40_30/0.3)] backdrop-blur-2xl">
+      <div className="mx-auto mb-3 flex w-[calc(100%-1.5rem)] max-w-sm items-center justify-between gap-1 rounded-full border border-white/60 bg-card/80 p-1.5 shadow-[0_18px_50px_-14px_rgb(120_40_30/0.45),inset_0_1px_0_rgb(255_255_255/0.8)] backdrop-blur-2xl">
         {NAV.map((n) => (
-          <NavLink key={n.to} to={n.to} end className={({ isActive }) => cn('relative flex min-h-[52px] flex-col items-center justify-center gap-0.5 rounded-2xl text-[11px] font-bold transition', isActive ? 'text-primary' : 'text-muted-foreground')}>
-            {({ isActive }) => (<>
-              {isActive && <motion.span layoutId="tab" className="absolute inset-0 rounded-2xl bg-secondary" transition={{ type: 'spring', stiffness: 420, damping: 34 }} />}
-              <n.icon className="relative h-[22px] w-[22px]" strokeWidth={isActive ? 2.4 : 1.8} />
-              <span className="relative">{n.label}</span>
-            </>)}
+          <NavLink key={n.to} to={n.to} end className="relative flex-1">
+            {({ isActive }) => (
+              <motion.div layout transition={{ type: 'spring', stiffness: 500, damping: 36 }}
+                className={cn('relative flex h-12 items-center justify-center gap-1.5 rounded-full px-3 text-[13px] font-bold', isActive ? 'text-primary-foreground' : 'text-muted-foreground active:scale-90')}>
+                {isActive && <motion.span layoutId="dock" className="absolute inset-0 rounded-full bg-gradient-brand shadow-lg shadow-primary/40" transition={{ type: 'spring', stiffness: 420, damping: 34 }} />}
+                <n.icon className="relative size-[22px] shrink-0" strokeWidth={isActive ? 2.4 : 1.9} />
+                <AnimatePresence initial={false}>
+                  {isActive && <motion.span key="l" initial={{ opacity: 0, width: 0 }} animate={{ opacity: 1, width: 'auto' }} exit={{ opacity: 0, width: 0 }} className="relative overflow-hidden whitespace-nowrap">{n.label}</motion.span>}
+                </AnimatePresence>
+              </motion.div>
+            )}
           </NavLink>
         ))}
       </div>
@@ -58,9 +61,8 @@ function BottomNav() {
 export default function Layout() {
   const { me } = useMe();
   const online = useOnline();
-  const [open, setOpen] = useState(false);
   const loc = useLocation();
-  useEffect(() => { setOpen(false); window.scrollTo({ top: 0 }); }, [loc.pathname]);
+  useEffect(() => { window.scrollTo({ top: 0 }); }, [loc.pathname]);
   const bal = me?.quota?.balance ?? 0;
 
   return (
@@ -80,20 +82,9 @@ export default function Layout() {
           </nav>
           <div className="flex items-center gap-2">
             <Balance bal={bal} />
-            <Sheet open={open} onOpenChange={setOpen}>
-              <SheetTrigger asChild>
-                <button className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card/80 active:scale-95" aria-label="منو"><Menu className="h-[18px] w-[18px]" /></button>
-              </SheetTrigger>
-              <SheetContent side="left" className="w-[85vw] max-w-xs" dir="rtl">
-                <SheetHeader><SheetTitle className="flex items-center gap-3 text-right"><AvatarImg id={me?.profile?.avatar} name={me?.profile?.displayName ?? '?'} className="size-12 ring-2" /><span className="min-w-0">{me?.profile?.displayName}<span className="block text-xs font-normal text-muted-foreground" dir="ltr">@{me?.profile?.username}</span></span></SheetTitle></SheetHeader>
-                <div className="mt-6 flex flex-col gap-1">
-                  {NAV.map((n) => <MenuLink key={n.to} to={n.to} icon={n.icon} label={n.label} />)}
-                  <MenuLink to="/terms" icon={FileText} label="قوانین و حریم خصوصی" />
-                  {me?.profile?.isAdmin && <MenuLink to="/admin" icon={Shield} label="پنل مدیریت" />}
-                  <button onClick={() => logout()} className="flex items-center gap-3 rounded-xl px-3 py-3 text-right text-destructive hover:bg-destructive/10"><LogOut className="h-5 w-5" /> خروج</button>
-                </div>
-              </SheetContent>
-            </Sheet>
+            <Link to="/profile" aria-label="پروفایل" className="rounded-full transition active:scale-90">
+              <AvatarImg id={me?.profile?.avatar} name={me?.profile?.displayName ?? '?'} className="size-9 ring-2 ring-primary/30" />
+            </Link>
           </div>
         </div>
       </header>
@@ -108,8 +99,4 @@ export default function Layout() {
       <InstallPrompt />
     </div>
   );
-}
-
-function MenuLink({ to, icon: Icon, label }: { to: string; icon: typeof History; label: string }) {
-  return <Link to={to} className="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-muted"><Icon className="h-5 w-5 text-muted-foreground" />{label}</Link>;
 }

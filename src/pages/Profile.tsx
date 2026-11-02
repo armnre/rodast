@@ -86,6 +86,7 @@ export default function Profile() {
         <Row icon={Gift} label="دعوت دوستان و هدیه گرفتن" onClick={() => nav('/invite')} />
         <Row icon={Sparkles} label="تاریخچه‌ی جواب‌ها" onClick={() => nav('/history')} />
         <Row icon={FileText} label="قوانین و حریم خصوصی" onClick={() => nav('/terms')} />
+        {p.isAdmin && <Row icon={Shield} label="پنل مدیریت" onClick={() => nav('/admin')} />}
       </div>
 
       {/* Edit */}
