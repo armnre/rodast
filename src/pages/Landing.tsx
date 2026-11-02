@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import { Sparkles, Gift, Clock, MessageSquareText, Wand2, Send, ShieldCheck, Share, PlusSquare, MoreVertical, Download, Apple, Smartphone, Zap, Lock, Copy } from 'lucide-react';
+import { Sparkles, MessageSquareText, Wand2, Send, ShieldCheck, Share, PlusSquare, MoreVertical, Download, Apple, Smartphone, Copy } from 'lucide-react';
 import { Button } from '@project/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@project/components/ui/accordion';
 import { cn } from '@project/components/lib/utils';
 import { Logo, LogoMark } from '../components/Logo';
 import OptionIcon from '../components/OptionIcon';
+import Seo from '../components/Seo';
 
 const SAMPLES = [
   { tone: 'naughty', label: 'شیطون', text: 'راحتیم وقتی تو هم باشی 😏' },
@@ -19,10 +20,10 @@ const HOW = [
   { icon: Send, t: 'کپی کن، بفرست', d: 'سه جواب متفاوت؛ از امن تا جسورانه.' },
 ];
 const FEATURES = [
-  { i: Zap, t: 'زیر ۵ ثانیه', d: 'جواب‌ها تقریباً فوری ساخته می‌شن.' },
-  { i: Gift, t: '۵ جواب برای هر دعوت', d: 'دوستاتو بیار، جواب هدیه بگیر.' },
-  { i: Clock, t: 'شارژ خودکار', d: 'تموم شد؟ ۲۴ ساعت بعد دوباره داری.' },
-  { i: Lock, t: 'خصوصی و امن', d: 'پیام‌هات فقط مال خودته؛ هر وقت خواستی پاک کن.' },
+  { img: 'https://images.fillout.com/912168/hp1wine38g/generated-images/pvCqSjF1RkF9Su8UQtVwue/img_fcj3ewiicqoqHVtS.jpg', t: 'زیر ۵ ثانیه', d: 'جواب‌ها تقریباً فوری ساخته می‌شن.' },
+  { img: 'https://images.fillout.com/912168/hp1wine38g/generated-images/pHTb6ufwoVQv6Y71ya1yU3/img_DC7eohocGj5mvWP-.jpg', t: '۵ جواب برای هر دعوت', d: 'دوستاتو بیار، جواب هدیه بگیر.' },
+  { img: 'https://images.fillout.com/912168/hp1wine38g/generated-images/tjJcxYUqwoqnxwocQr36hy/img_HXzVSUDDxkBQGahZ.jpg', t: 'شارژ خودکار', d: 'تموم شد؟ ۲۴ ساعت بعد دوباره داری.' },
+  { img: 'https://images.fillout.com/912168/hp1wine38g/generated-images/bq5iZ2dcR734GofXNmwDcV/img_BZVhZvRb-OKbfPbR.jpg', t: 'خصوصی و امن', d: 'پیام‌هات فقط مال خودته؛ هر وقت خواستی پاک کن.' },
 ];
 const FAQ = [
   ['رایگانه؟', 'آره! با ثبت‌نام ۱۰ جواب رایگان می‌گیری. بعدش با دعوت دوستات یا شارژ خودکار ۲۴ ساعته ادامه می‌دی.'],
@@ -42,6 +43,13 @@ const STEPS = {
     { i: Download, t: 'Install app / نصب برنامه', d: 'تأیید کن؛ آیکون رو دست میاد رو صفحه‌ت.' },
   ],
 };
+
+const JSON_LD = [
+  { '@context': 'https://schema.org', '@type': 'WebApplication', name: 'رو دست', alternateName: 'Rodast', applicationCategory: 'LifestyleApplication', operatingSystem: 'Android, iOS, Web', inLanguage: 'fa-IR',
+    description: 'دستیار هوش مصنوعی فارسی برای ساختن جواب‌های حاضرجواب، بامزه و جذاب به پیام‌ها.', offers: { '@type': 'Offer', price: '0', priceCurrency: 'IRR' } },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: FAQ.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
+  { '@context': 'https://schema.org', '@type': 'HowTo', name: 'ساختن جواب با رو دست', step: HOW.map((h, i) => ({ '@type': 'HowToStep', position: i + 1, name: h.t, text: h.d })) },
+];
 
 const fade = { initial: { opacity: 0, y: 24 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, margin: '-60px' } };
 
@@ -80,7 +88,7 @@ function Install() {
         </motion.div>
         <motion.div {...fade} className="relative">
           <div className="absolute inset-8 rounded-full bg-primary/30 blur-3xl" />
-          <img src="https://images.fillout.com/912168/hp1wine38g/generated-images/cNDyph2Ygj35oN9Z6ZPAHn/img_pCr-Vj6J9jt5WI-3.jpg" alt="نصب رو دست روی گوشی"
+          <img src="https://images.fillout.com/912168/hp1wine38g/generated-images/cNDyph2Ygj35oN9Z6ZPAHn/img_pCr-Vj6J9jt5WI-3.jpg" alt="آموزش نصب رو دست روی گوشی" width={800} height={800} decoding="async"
             loading="lazy" className="relative mx-auto w-full max-w-sm rounded-[2rem] ring-1 ring-white/10" />
         </motion.div>
       </div>
@@ -93,10 +101,13 @@ export default function Landing() {
   const start = () => nav('/login');
   return (
     <div className="bg-blobs min-h-[100dvh] overflow-x-hidden">
+      <Seo title="رو دست | جواب چی بدم؟ جواب حاضرجواب با هوش مصنوعی" path="/"
+        description="پیامی که گرفتی رو بده، در چند ثانیه سه جواب بامزه، شیطون یا باکلاس فارسی بگیر. ۱۰ جواب رایگان، بدون نصب از اپ‌استور، ورود با موبایل."
+        jsonLd={JSON_LD} />
       <header className="sticky top-0 z-30 border-b border-border bg-background/60 backdrop-blur-2xl" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <Logo size={34} />
-          <nav className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
+          <a href="/" aria-label="رو دست، صفحه‌ی اصلی"><Logo size={34} /></a>
+          <nav aria-label="منوی اصلی" className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
             <a href="#how" className="hover:text-foreground">چطور کار می‌کنه</a>
             <a href="#install" className="hover:text-foreground">نصب اپ</a>
             <a href="#faq" className="hover:text-foreground">سؤالات</a>
@@ -129,8 +140,9 @@ export default function Landing() {
           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', stiffness: 100, delay: 0.15 }} className="relative">
             <div className="absolute inset-6 rounded-full bg-primary/25 blur-3xl" />
             <motion.img animate={{ y: [0, -10, 0] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-              src="https://images.fillout.com/912168/hp1wine38g/generated-images/eR9f3AXYnm4Wm2cyiKhSMD/img_U7Y1BrmyCcpI7mWh.jpg" alt="رو دست روی گوشی"
-              className="relative w-full rounded-[2rem] ring-1 ring-white/10 [mask-image:radial-gradient(ellipse_at_center,black_60%,transparent_100%)]" />
+              src="https://images.fillout.com/912168/hp1wine38g/generated-images/c2JexQmhmwBaCvkwDEyxb8/img_W7v90VOjx0iHMjwW.jpg" alt="رو دست: جواب‌های حاضرجواب با هوش مصنوعی روی گوشی"
+              width={1408} height={1056} fetchPriority="high" decoding="async"
+              className="relative w-full rounded-[2rem] mix-blend-multiply" />
           </motion.div>
         </section>
 
@@ -159,10 +171,10 @@ export default function Landing() {
           </div>
         </section>
 
-        <section className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+        <section aria-label="ویژگی‌ها" className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
           {FEATURES.map((f, i) => (
             <motion.div key={i} {...fade} transition={{ delay: i * 0.08 }} className="card-soft p-4 sm:p-5">
-              <f.i className="h-7 w-7 text-accent" />
+              <img src={f.img} alt={f.t} width={96} height={96} loading="lazy" decoding="async" className="h-20 w-20 rounded-2xl object-cover mix-blend-multiply sm:h-24 sm:w-24" />
               <b className="mt-3 block text-sm sm:text-base">{f.t}</b>
               <p className="mt-1 text-xs leading-6 text-muted-foreground sm:text-sm">{f.d}</p>
             </motion.div>

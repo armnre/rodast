@@ -8,6 +8,7 @@ import { requestOtp, verifyOtp, trackEvent } from 'zitejs/api';
 import { LogoMark } from '../components/Logo';
 import { setSession } from '../lib/session';
 import { errMsg, fa } from '../lib/me';
+import Seo from '../components/Seo';
 
 const toLatin = (s: string) => s.replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)));
 const LEN = 5;
@@ -146,6 +147,7 @@ export default function Login() {
   const [step, setStep] = useState<{ phone: string; code: string; resend: number } | null>(null);
   return (
     <div className="relative min-h-[100dvh] overflow-hidden bg-background">
+      <Seo title="ورود به رو دست | ۱۰ جواب رایگان" path="/login" description="با شماره موبایل وارد رو دست شو و ۱۰ جواب حاضرجواب رایگان بگیر؛ بدون رمز، کمتر از ۳۰ ثانیه." />
       <motion.div aria-hidden className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-primary/25 blur-3xl"
         animate={{ scale: [1, 1.15, 1], x: [0, -20, 0] }} transition={{ duration: 8, repeat: Infinity }} />
       <motion.div aria-hidden className="absolute -bottom-40 -left-24 h-[28rem] w-[28rem] rounded-full bg-secondary blur-3xl"

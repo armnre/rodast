@@ -53,7 +53,7 @@ export default function App() {
     document.documentElement.classList.remove('dark');
     document.querySelector('meta[name=theme-color]')?.setAttribute('content', '#fff8f5');
     document.documentElement.lang = 'fa';
-    document.title = 'رو دست — جواب چی بدیم؟';
+    if (!document.title || document.title === 'Zite App') document.title = 'رو دست — جواب چی بدیم؟';
   }, []);
 
   return (
