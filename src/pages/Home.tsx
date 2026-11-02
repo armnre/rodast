@@ -1,7 +1,7 @@
 import { tok } from '../lib/session';
 import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Loader2, PartyPopper, RefreshCw, ClipboardPaste, X, Coins } from 'lucide-react';
+import { Sparkles, Loader2, PartyPopper, RefreshCw, ClipboardPaste, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { generateReplies } from 'zitejs/api';
 import { Button } from '@project/components/ui/button';
@@ -12,6 +12,7 @@ import { errMsg, fa, useMe, type Quota } from '../lib/me';
 import ReplyCard from '../components/ReplyCard';
 import LimitedPanel from '../components/LimitedPanel';
 import OptionIcon from '../components/OptionIcon';
+import { CoinArt } from '../components/Art';
 
 type Item = { id: string; label: string };
 
@@ -22,7 +23,7 @@ function Tiles({ items, value, onChange }: { items: readonly Item[]; value: stri
         const on = value === i.id;
         return (
           <motion.button key={i.id} type="button" whileTap={{ scale: 0.94 }} onClick={() => onChange(i.id)}
-            className={cn('relative flex w-[5.5rem] shrink-0 snap-start flex-col items-center gap-2 rounded-2xl border p-3 text-center text-xs font-bold transition sm:w-auto',
+            className={cn('relative flex w-[5.25rem] shrink-0 snap-start flex-col items-center gap-2 rounded-2xl border p-3 text-center text-xs font-bold transition sm:w-auto',
               on ? 'border-primary/70 bg-primary/10 text-foreground glow' : 'border-border bg-foreground/[0.04] text-muted-foreground hover:border-border hover:text-foreground')}>
             <OptionIcon id={i.id} />
             <span className="leading-5">{i.label}</span>
@@ -115,7 +116,7 @@ export default function Home() {
       <section className="pt-3 text-center md:pt-8">
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
           className="mx-auto mb-3 inline-flex items-center gap-1.5 rounded-full border border-border bg-foreground/[0.04] px-3 py-1 text-xs font-bold text-muted-foreground">
-          <Coins className="h-3.5 w-3.5 text-accent" /> {fa(balance)} جواب داری
+          <CoinArt className="h-5 w-5" /> {fa(balance)} جواب داری
         </motion.div>
         <h1 className="text-[1.85rem] font-black leading-tight tracking-tight sm:text-5xl">جواب <span className="text-gradient">چی بدیم؟</span></h1>
         <p className="mt-2 text-base text-muted-foreground sm:text-lg">پیامتو بده، یه جواب رو‌دست‌خور بگیر.</p>
@@ -163,7 +164,7 @@ export default function Home() {
         )}
         {result && (
           <section className="space-y-4">
-            <div className="flex flex-wrap items-end justify-between gap-3">
+            <div className="flex flex-wrap items-end justify-between gap-3 min-w-0">
               <div>
                 <h2 className="flex items-center gap-2 text-2xl font-black"><PartyPopper className="h-6 w-6 text-accent" />اینم جواب‌هات!</h2>
                 <p className="text-sm text-muted-foreground">روی هر جواب بزنی کپی می‌شه.</p>

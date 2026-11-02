@@ -1,6 +1,12 @@
 {
   "id": "hp1wine38g",
   "accessMode": "external",
+  "seoSettings": {
+    "title": "رو دست — جواب چی بدیم؟",
+    "description": "پیامتو بده، سه تا جواب حاضرجواب و جذاب بگیر.",
+    "thumbnailUrl": "https://images.fillout.com/912168/hp1wine38g/generated-images/wfWo3CahrPGYE8sVCmv7J8/img_ghoIhaRe333NzvDC.jpg",
+    "faviconUrl": "https://images.fillout.com/912168/hp1wine38g/generated-images/wfWo3CahrPGYE8sVCmv7J8/img_ghoIhaRe333NzvDC.jpg"
+  },
   "envVars": {
     "ZITE_AI_API_KEY": {
       "description": "کلید API نارا‌روتر برای تولید جواب‌ها"

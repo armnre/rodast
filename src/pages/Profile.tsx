@@ -34,16 +34,16 @@ export default function Profile() {
 
   return (
     <div className="space-y-5 pt-2">
-      <div className="card-soft p-6">
+      <div className="card-soft p-5 sm:p-6">
         <div className="flex items-center gap-4">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-2xl font-black text-primary-foreground">{p.displayName.slice(0, 1)}</div>
-          <div>
-            <h1 className="text-xl font-black">{p.displayName}</h1>
-            <p className="text-sm text-muted-foreground" dir="ltr">@{p.username}</p>
+          <div className="flex h-16 w-16 shrink-0 items-center bg-gradient-brand shadow-lg shadow-primary/30 justify-center rounded-full bg-primary text-2xl font-black text-primary-foreground">{p.displayName.slice(0, 1)}</div>
+          <div className="min-w-0">
+            <h1 className="truncate text-xl font-black">{p.displayName}</h1>
+            <p className="truncate text-sm text-muted-foreground" dir="ltr">@{p.username}</p>
             <p className="text-xs text-muted-foreground">{me?.phone} · عضو از {p.joinedAt ? faDate(p.joinedAt) : ''}</p>
           </div>
         </div>
-        <div className="mt-5 grid grid-cols-3 gap-3 text-center">
+        <div className="mt-5 grid grid-cols-3 gap-2 text-center sm:gap-3">
           <Box label="پاسخ باقی‌مانده" value={fa(me?.quota?.balance ?? 0)} />
           <Box label="جواب ساخته‌شده" value={fa(p.totalReplies)} />
           <Box label="وضعیت" value={p.status === 'Active' ? 'فعال' : 'غیرفعال'} />
@@ -51,14 +51,14 @@ export default function Profile() {
         <Button variant="outline" className="mt-4 w-full rounded-2xl" onClick={() => nav('/invite')}>دعوت دوستان</Button>
       </div>
 
-      <div className="card-soft space-y-4 p-6">
+      <div className="card-soft space-y-4 p-5 sm:p-6">
         <h2 className="font-black">تنظیمات حساب</h2>
         <div className="space-y-1.5"><Label>نام نمایشی</Label><Input value={dn} onChange={(e) => setDn(e.target.value)} className="h-11 rounded-xl" /></div>
         <div className="space-y-1.5"><Label>نام کاربری</Label><Input dir="ltr" value={un} onChange={(e) => setUn(e.target.value.toLowerCase())} className="h-11 rounded-xl text-left" /></div>
-        <Button onClick={save} disabled={busy} className="rounded-xl">{busy && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}ذخیره</Button>
+        <Button onClick={save} disabled={busy} className="h-11 w-full rounded-xl sm:w-auto">{busy && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}ذخیره</Button>
       </div>
 
-      <div className="card-soft space-y-3 p-6">
+      <div className="card-soft space-y-3 p-5 sm:p-6">
         <h2 className="font-black">نشست و حساب</h2>
         <Button variant="outline" className="w-full justify-start rounded-xl" onClick={() => logout()}><LogOut className="ml-2 h-4 w-4" />خروج از حساب</Button>
         <AlertDialog>
@@ -74,5 +74,5 @@ export default function Profile() {
 }
 
 function Box({ label, value }: { label: string; value: string }) {
-  return <div className="rounded-2xl bg-muted/70 p-3"><div className="text-lg font-black">{value}</div><div className="text-[11px] text-muted-foreground">{label}</div></div>;
+  return <div className="min-w-0 rounded-2xl bg-muted/70 px-1.5 py-3"><div className="truncate text-lg font-black">{value}</div><div className="text-[11px] leading-4 text-muted-foreground">{label}</div></div>;
 }

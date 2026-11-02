@@ -37,7 +37,7 @@ export default function ReplyCard({ text, tone, index, disabled, onRegenerate, o
           {fa(index + 1)} · {VIBES[index] ?? ''}
         </span>
       </div>
-      <button onClick={copy} className="relative mt-4 flex-1 rounded-2xl rounded-tr-md bg-gradient-brand p-4 text-right text-[17px] font-semibold leading-8 text-white shadow-lg shadow-primary/20 transition active:scale-[0.98]">
+      <button onClick={copy} className="relative mt-4 flex-1 rounded-2xl rounded-tr-md bg-gradient-brand p-4 text-right break-anywhere text-base font-semibold leading-8 sm:text-[17px] text-white shadow-lg shadow-primary/20 transition active:scale-[0.98]">
         {text}
       </button>
       <div className="relative mt-4 grid grid-cols-4 gap-2">

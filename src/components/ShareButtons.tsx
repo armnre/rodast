@@ -11,7 +11,7 @@ export function ShareButtons({ link }: { link: string }) {
     try { await navigator.share({ title: 'رو دست', text: TEXT, url: link }); log('native'); } catch { /* cancelled */ }
   };
   return (
-    <div className="mt-3 flex flex-wrap gap-2">
+    <div className="mt-3 grid grid-cols-3 gap-2 sm:flex sm:flex-wrap">
       {'share' in navigator && (
         <Button size="sm" variant="outline" className="rounded-xl bg-card" onClick={native}><Share2 className="ml-1 h-4 w-4" />اشتراک</Button>
       )}

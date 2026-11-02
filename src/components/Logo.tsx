@@ -2,9 +2,9 @@ import { cn } from '@project/components/lib/utils';
 
 export function LogoMark({ size = 40, className }: { size?: number; className?: string }) {
   return (
-    <div className={cn('relative shrink-0 overflow-hidden shadow-lg shadow-primary/30 ring-1 ring-white/10', className)}
+    <div className={cn('relative shrink-0 overflow-hidden shadow-lg shadow-primary/30 ring-1 ring-black/5', className)}
       style={{ width: size, height: size, borderRadius: size * 0.28 }}>
-      <img src="https://images.fillout.com/912168/hp1wine38g/generated-images/urSKdEMAwKAsYAkivrkrLW/img_ChsCOZGcu-JBMKl2.jpg"
+      <img src="https://images.fillout.com/912168/hp1wine38g/generated-images/wfWo3CahrPGYE8sVCmv7J8/img_ghoIhaRe333NzvDC.jpg"
         alt="" draggable={false} className="h-full w-full scale-[1.12] object-cover" />
     </div>
   );

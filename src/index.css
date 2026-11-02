@@ -136,3 +136,8 @@ input, textarea, select { font-size: 16px; } /* prevent iOS zoom */
 @media (min-width: 768px) { input, textarea, select { font-size: inherit; } }
 button, a { touch-action: manipulation; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+html, body { overflow-x: clip; max-width: 100%; }
+#root { min-height: 100dvh; }
+img, video, canvas, svg { max-width: 100%; }
+pre, code { white-space: pre-wrap; word-break: break-word; }
+.break-anywhere { overflow-wrap: anywhere; }

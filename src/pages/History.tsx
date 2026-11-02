@@ -8,6 +8,7 @@ import { Skeleton } from '@project/components/ui/skeleton';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@project/components/ui/alert-dialog';
 import { SITUATIONS, TONES, labelOf } from '../shared/options';
 import { errMsg, faDate } from '../lib/me';
+import { ChatsArt } from '../components/Art';
 
 type Item = GetHistoryOutputType['items'][0];
 
@@ -45,7 +46,7 @@ export default function History() {
         )}
       </div>
       {!items ? [0, 1, 2].map((i) => <Skeleton key={i} className="h-40 rounded-3xl" />) : items.length === 0 ? (
-        <div className="card-soft p-10 text-center text-muted-foreground">هنوز جوابی نساختی. برو سراغ «جوابشو بده»!</div>
+        <div className="card-soft flex flex-col items-center p-8 text-center text-muted-foreground"><ChatsArt className="h-36 w-36" /><p className="mt-2">هنوز جوابی نساختی. برو سراغ «جواب بساز»!</p></div>
       ) : items.map((it) => (
         <div key={it.id} className="card-soft p-5">
           <div className="flex items-start justify-between gap-3">

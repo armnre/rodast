@@ -2,12 +2,13 @@ import { logout } from '../lib/session';
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
-import { Menu, MessageSquareHeart, History, Gift, UserRound, Shield, LogOut, FileText, WifiOff, Coins } from 'lucide-react';
+import { Menu, MessageSquareHeart, History, Gift, UserRound, Shield, LogOut, FileText, WifiOff } from 'lucide-react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@project/components/ui/sheet';
 import { cn } from '@project/components/lib/utils';
 import { Logo } from './Logo';
 import { fa, useMe } from '../lib/me';
 import InstallPrompt from './InstallPrompt';
+import { CoinArt } from './Art';
 
 const NAV = [
   { to: '/', label: 'جواب بساز', icon: MessageSquareHeart },
@@ -30,7 +31,7 @@ function Balance({ bal }: { bal: number }) {
   return (
     <Link to="/invite" className={cn('flex h-9 items-center gap-1.5 rounded-full px-3 text-sm font-black tabular-nums transition active:scale-95',
       bal > 0 ? 'bg-accent/10 text-accent ring-1 ring-accent/25' : 'bg-destructive/10 text-destructive ring-1 ring-destructive/30')}>
-      <Coins className="h-4 w-4" />{bal > 0 ? fa(bal) : 'تموم شد'}
+      <CoinArt className="h-5 w-5" />{bal > 0 ? fa(bal) : 'تموم شد'}
     </Link>
   );
 }
@@ -69,7 +70,7 @@ export default function Layout() {
         </div>
       )}
       <header className="sticky top-0 z-30 border-b border-border/60 bg-background/75 backdrop-blur-2xl" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
-        <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 px-4 md:h-16">
+        <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-2 px-3 sm:px-4 md:h-16">
           <Link to="/" className="active:scale-95"><Logo size={30} /></Link>
           <nav className="hidden gap-1 rounded-full border border-border/70 bg-card/70 p-1 md:flex">
             {NAV.map((n) => (
