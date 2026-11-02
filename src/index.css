@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Auto-restored theme variables */
+    --shadow-x: 0px;
+    --shadow-y: 1px;
+    --shadow-blur: 4px;
+    --shadow-spread: 0px;
+    --shadow-opacity: 0.2;
+    --shadow-color: #000000;
+    --shadow-2xs: var(--shadow-x) var(--shadow-y) color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
+    --shadow-xs: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--shadow-spread) color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
+    --shadow-lg: calc(var(--shadow-x) * 4) calc(var(--shadow-y) * 4) calc(var(--shadow-blur) * 5) calc(var(--shadow-spread) - 3px) color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
+    --shadow-xl: calc(var(--shadow-x) * 6) calc(var(--shadow-y) * 6) calc(var(--shadow-blur) * 7) calc(var(--shadow-spread) - 5px) color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
+    --shadow-2xl: calc(var(--shadow-x) * 8) calc(var(--shadow-y) * 8) calc(max(0px, var(--shadow-blur) * 9 - 8px)) calc(var(--shadow-spread) - 12px) color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 250%), transparent);
+    --shadow: var(--shadow-md);
+
+    --background: 36 38% 96%;
+    --foreground: 225 6% 13%;
+    --muted: 38 18% 90%;
+    --muted-foreground: 33 4% 45%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 225 6% 13%;
+    --border: 36 16% 88%;
+    --input: 36 16% 86%;
+    --card: 0 0% 100%;
+    --card-foreground: 225 6% 13%;
+    --primary: 8 85% 61%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 15 52% 90%;
+    --secondary-foreground: 8 70% 42%;
+    --accent: 15 52% 92%;
+    --accent-foreground: 8 70% 40%;
+    --destructive: 0 72% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --ring: 8 85% 61%;
+    --radius: 1rem;
+    --sidebar-background: 36 38% 96%;
+    --sidebar-foreground: 225 6% 13%;
+    --sidebar-primary: 8 85% 61%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 15 52% 92%;
+    --sidebar-accent-foreground: 225 6% 13%;
+    --sidebar-border: 36 16% 88%;
+    --sidebar-ring: 8 85% 61%;
+    --chart-1: 8 85% 61%;
+    --chart-2: 225 6% 13%;
+    --chart-3: 15 52% 80%;
+    --chart-4: 33 4% 55%;
+    --chart-5: 38 60% 60%;
+    --font-sans: 'Vazirmatn', system-ui, sans-serif;
+    --font-mono: 'Vazirmatn', monospace;
+    --shadow-sm: 0 1px 2px rgb(32 33 36 / 0.04);
+    --shadow-md: 0 8px 30px -12px rgb(240 91 69 / 0.18);
+  }
+
+  .dark {
+    --background: 240 12% 4%;
+    --foreground: 30 20% 97%;
+    --muted: 240 8% 12%;
+    --muted-foreground: 240 6% 64%;
+    --popover: 240 10% 8%;
+    --popover-foreground: 30 20% 97%;
+    --border: 240 7% 15%;
+    --input: 240 7% 17%;
+    --card: 240 10% 7%;
+    --card-foreground: 30 20% 97%;
+    --primary: 4 100% 64%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 8 45% 14%;
+    --secondary-foreground: 14 100% 82%;
+    --accent: 162 85% 52%;
+    --accent-foreground: 240 12% 4%;
+    --destructive: 0 80% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --ring: 4 100% 64%;
+    --chart-1: 4 100% 64%;
+    --chart-2: 162 85% 52%;
+    --chart-3: 24 100% 58%;
+    --chart-4: 190 90% 60%;
+    --chart-5: 30 100% 62%;
+    --sidebar-background: 240 10% 6%;
+    --sidebar-foreground: 30 20% 97%;
+    --sidebar-primary: 4 100% 64%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 8% 12%;
+    --sidebar-accent-foreground: 30 20% 97%;
+    --sidebar-border: 240 7% 15%;
+    --sidebar-ring: 4 100% 64%;
+    --shadow-md: 0 10px 40px -12px rgb(255 90 70 / 0.35);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html, body {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-feature-settings: 'ss01';
+  }
+}
+
+.bg-blobs {
+  background:
+    radial-gradient(36rem 26rem at 100% -5%, hsl(var(--primary) / 0.22) 0%, transparent 60%),
+    radial-gradient(30rem 24rem at -10% 30%, hsl(24 100% 58% / 0.14) 0%, transparent 60%),
+    radial-gradient(26rem 20rem at 60% 110%, hsl(var(--accent) / 0.08) 0%, transparent 60%),
+    hsl(var(--background));
+  background-attachment: fixed;
+}
+.card-soft {
+  @apply rounded-3xl border border-white/[0.07] bg-card/70 backdrop-blur-xl;
+  box-shadow: 0 1px 0 0 rgb(255 255 255 / 0.05) inset, 0 20px 50px -24px rgb(0 0 0 / 0.6);
+}
+.text-gradient {
+  background: linear-gradient(100deg, hsl(var(--primary)), hsl(24 100% 62%) 55%, hsl(var(--accent)));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.bg-gradient-brand { background: linear-gradient(120deg, hsl(var(--primary)), hsl(24 100% 58%)); }
+.glow { box-shadow: 0 0 0 1px hsl(var(--primary) / 0.4), 0 10px 40px -8px hsl(var(--primary) / 0.6); }
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.pb-safe { padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
