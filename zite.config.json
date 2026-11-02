@@ -9,7 +9,7 @@
   },
   "envVars": {
     "ZITE_AI_API_KEY": {
-      "description": "کلید API نارا‌روتر برای تولید جواب‌ها"
+      "description": "کلید API جدید نارا‌روتر"
     }
   }
 }

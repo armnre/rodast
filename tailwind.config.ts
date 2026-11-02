@@ -12,6 +12,7 @@ const tailwindConfig: Config = {
     extend: {
       fontFamily: {
         sans: ['var(--font-sans)', ...defaultTheme.fontFamily.sans],
+        display: ['var(--font-display)', 'var(--font-sans)', ...defaultTheme.fontFamily.sans],
         serif: ['var(--font-serif)', ...defaultTheme.fontFamily.serif],
         mono: ['var(--font-mono)', ...defaultTheme.fontFamily.mono],
       },

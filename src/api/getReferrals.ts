@@ -26,6 +26,12 @@ export default createEndpoint({
       waiting: records.filter((r) => r.status === 'Signed Up' || r.status === 'Review').length,
       pendingRewards: records.filter((r) => r.rewardStatus === 'Pending').reduce((s, r) => s + (r.rewardAmount ?? 0), 0),
       grantedRewards: records.filter((r) => r.rewardStatus === 'Granted').reduce((s, r) => s + (r.rewardAmount ?? 0), 0),
+      recent: records.slice(0, 10).map((r, i) => ({
+        id: r.id ?? String(i),
+        status: r.status === 'Completed' ? 'done' : 'waiting',
+        reward: r.rewardAmount ?? 0,
+        createdAt: r.createdAt ? String(r.createdAt) : '',
+      })),
     };
   },
 });

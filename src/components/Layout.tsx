@@ -9,6 +9,7 @@ import { Logo } from './Logo';
 import { fa, useMe } from '../lib/me';
 import InstallPrompt from './InstallPrompt';
 import { CoinArt } from './Art';
+import AvatarImg from './AvatarImg';
 
 const NAV = [
   { to: '/', label: 'جواب بساز', icon: MessageSquareHeart },
@@ -84,7 +85,7 @@ export default function Layout() {
                 <button className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card/80 active:scale-95" aria-label="منو"><Menu className="h-[18px] w-[18px]" /></button>
               </SheetTrigger>
               <SheetContent side="left" className="w-[85vw] max-w-xs" dir="rtl">
-                <SheetHeader><SheetTitle className="text-right">{me?.profile?.displayName}<span className="block text-xs font-normal text-muted-foreground" dir="ltr">@{me?.profile?.username}</span></SheetTitle></SheetHeader>
+                <SheetHeader><SheetTitle className="flex items-center gap-3 text-right"><AvatarImg id={me?.profile?.avatar} name={me?.profile?.displayName ?? '?'} className="size-12 ring-2" /><span className="min-w-0">{me?.profile?.displayName}<span className="block text-xs font-normal text-muted-foreground" dir="ltr">@{me?.profile?.username}</span></span></SheetTitle></SheetHeader>
                 <div className="mt-6 flex flex-col gap-1">
                   {NAV.map((n) => <MenuLink key={n.to} to={n.to} icon={n.icon} label={n.label} />)}
                   <MenuLink to="/terms" icon={FileText} label="قوانین و حریم خصوصی" />

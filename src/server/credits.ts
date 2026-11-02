@@ -218,5 +218,8 @@ export function serializeProfile(p: Profile) {
     status: p.status ?? 'Active',
     isAdmin: p.isAdmin === true,
     joinedAt: p.joinedAt ? String(p.joinedAt) : null,
+    avatar: p.avatar ?? '',
+    bio: p.bio ?? '',
+    vibe: p.vibe ?? '',
   };
 }

@@ -40,6 +40,8 @@ export default createEndpoint({
       const { quota } = await quotaView(uid, cfg);
       return { requestId: prior.id, replies: JSON.parse(prior.repliesJson || '[]') as string[], tone: prior.tone, quota };
     }
+    // A failed attempt frees its key so the same request can be retried.
+    if (prior?.status === 'Failed') await zite.aiRequests.update({ id: prior.id, record: { idempotencyKey: `${key}:failed:${Date.now()}` } });
     if (prior?.status === 'Processing') throw new ZiteError({ code: 'CONFLICT', message: 'busy', userFacingMessage: 'درخواست قبلی هنوز در حال انجامه.' });
 
     const cfg = await getSettings();

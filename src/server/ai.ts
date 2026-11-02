@@ -47,9 +47,13 @@ export class NaraRouterProvider implements AIProvider {
       });
       const raw = await res.text();
       if (!res.ok) {
-        let msg = raw.slice(0, 200);
-        try { msg = JSON.parse(raw)?.error?.message ?? msg; } catch { /* keep raw */ }
-        return { ok: false as const, status: res.status, msg };
+        // Stable envelope: { error: { type, message, request_id } } — switch on `type`, never the message.
+        let msg = raw.slice(0, 200), type = '', requestId = '';
+        try {
+          const err = JSON.parse(raw)?.error ?? {};
+          msg = err.message ?? msg; type = err.type ?? ''; requestId = err.request_id ?? '';
+        } catch { /* non-JSON (e.g. CDN error page) */ }
+        return { ok: false as const, status: res.status, type, requestId, msg };
       }
       const data = JSON.parse(raw) as { choices?: { message?: { content?: string } }[]; usage?: { total_tokens?: number } };
       const text = data.choices?.[0]?.message?.content?.trim();
@@ -72,15 +76,23 @@ export class NaraRouterProvider implements AIProvider {
       for (let attempt = 0; attempt <= this.cfg.maxRetries; attempt++) {
         const r = await this.call(model, messages, jsonMode);
         if (r.ok) return { text: r.text, tokens: r.tokens, model };
-        console.error('[nararouter]', model, r.status, r.msg);
+        const type = 'type' in r ? r.type : '';
+        console.error('[nararouter]', model, r.status, type, 'requestId' in r ? r.requestId : '', r.msg);
 
-        if (r.status === 402 || /insufficient credit/i.test(r.msg)) { last = new AIError('CREDITS', r.msg); break; }
-        if (r.status === 401 || r.status === 403) throw new AIError('CONFIG', r.msg);
-        if (r.status === 400 || r.status === 404 || r.status === 422) {
-          if (jsonMode) { jsonMode = false; attempt--; continue; } // retry once without JSON mode
+        if (r.status === 402) { last = new AIError('CREDITS', r.msg); break; } // no balance → next model
+        if (type === 'unauthorized' || r.status === 401) throw new AIError('CONFIG', r.msg); // bad key: no model will work
+        if (type === 'forbidden' || r.status === 403) { last = new AIError('CONFIG', r.msg); break; } // plan lacks model → next
+        if (type === 'not_found' || r.status === 404) { last = new AIError('CONFIG', r.msg); break; } // unknown alias → next
+        if (type === 'validation_error' || r.status === 400 || r.status === 413 || r.status === 415 || r.status === 422) {
+          // Safety rejections are terminal ("rejected locally") — but the only optional param we send is JSON mode,
+          // so drop it once, then move to the next model (docs: "route the session to a different model").
+          if (jsonMode) { jsonMode = false; attempt--; continue; }
           last = new AIError('PROVIDER', r.msg);
-          break; // model rejects us — try next model
+          break;
         }
+        // rate_limited (429) is per model tier → other tiers may still work, so move on instead of hammering.
+        if (type === 'rate_limited' || r.status === 429) { last = new AIError('PROVIDER', r.msg); break; }
+        // service_unavailable / internal_error / timeout / network → retry with backoff below.
         last = r.status === -1 ? new AIError('TIMEOUT', 'timeout') : new AIError(r.status === 0 && r.msg === 'empty' ? 'INVALID' : 'PROVIDER', r.msg);
         if (attempt < this.cfg.maxRetries) await new Promise((ok) => setTimeout(ok, 500 * 2 ** attempt));
       }

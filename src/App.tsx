@@ -16,6 +16,10 @@ import Layout from './components/Layout';
 import Splash from './components/Splash';
 import Blocked from './components/Blocked';
 
+// Installed (home-screen) app skips the marketing landing: login → straight into the app.
+const isStandalone = () =>
+  window.matchMedia('(display-mode: standalone)').matches || (navigator as Navigator & { standalone?: boolean }).standalone === true;
+
 function Join() {
   const { code } = useParams();
   useEffect(() => { if (code) localStorage.setItem(REF_KEY, code.toUpperCase().slice(0, 6)); }, [code]);
@@ -54,7 +58,8 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <Toaster position="top-center" dir="rtl" />
+      <Toaster position="top-center" dir="rtl" richColors={false} closeButton duration={4500} gap={10} offset={16}
+        toastOptions={{ className: 'rd-toast', classNames: { title: 'rd-toast-title', description: 'rd-toast-desc', icon: 'rd-toast-icon', closeButton: 'rd-toast-close' } }} />
       <Routes>
         <Route path="/join/:code" element={<Join />} />
         <Route path="*" element={
@@ -62,7 +67,7 @@ export default function App() {
             <Routes>
               <Route path="/terms" element={<Terms />} />
               <Route path="/login" element={<Login />} />
-              <Route path="*" element={<Landing />} />
+              <Route path="*" element={isStandalone() ? <Navigate to="/login" replace /> : <Landing />} />
             </Routes>
           ) : <MeProvider key={session.token}><SignedIn /></MeProvider>
         } />
