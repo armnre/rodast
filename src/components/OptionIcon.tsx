@@ -42,7 +42,7 @@ export default function OptionIcon({ id, size = 'md', className }: { id: string;
   const box = size === 'sm' ? 'h-6 w-6 rounded-lg' : size === 'lg' ? 'h-12 w-12 rounded-2xl' : 'h-9 w-9 rounded-xl';
   const ic = size === 'sm' ? 'h-3.5 w-3.5' : size === 'lg' ? 'h-6 w-6' : 'h-[18px] w-[18px]';
   return (
-    <span className={cn('relative inline-flex shrink-0 items-center justify-center bg-gradient-to-br text-white shadow-lg shadow-black/30 ring-1 ring-white/20', it.hue, box, className)}>
+    <span className={cn('relative inline-flex shrink-0 items-center justify-center bg-gradient-to-br text-white shadow-lg shadow-foreground/10 ring-1 ring-white/20', it.hue, box, className)}>
       <it.icon className={ic} strokeWidth={2.2} />
     </span>
   );

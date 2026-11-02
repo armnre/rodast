@@ -23,7 +23,7 @@ function Tiles({ items, value, onChange }: { items: readonly Item[]; value: stri
         return (
           <motion.button key={i.id} type="button" whileTap={{ scale: 0.94 }} onClick={() => onChange(i.id)}
             className={cn('relative flex w-[5.5rem] shrink-0 snap-start flex-col items-center gap-2 rounded-2xl border p-3 text-center text-xs font-bold transition sm:w-auto',
-              on ? 'border-primary/70 bg-primary/10 text-foreground glow' : 'border-white/[0.07] bg-white/[0.03] text-muted-foreground hover:border-white/20 hover:text-foreground')}>
+              on ? 'border-primary/70 bg-primary/10 text-foreground glow' : 'border-border bg-foreground/[0.04] text-muted-foreground hover:border-border hover:text-foreground')}>
             <OptionIcon id={i.id} />
             <span className="leading-5">{i.label}</span>
           </motion.button>
@@ -41,7 +41,7 @@ function Pills({ items, value, onChange, optional }: { items: readonly Item[]; v
         return (
           <button key={i.id} type="button" onClick={() => onChange(on && optional ? undefined : i.id)}
             className={cn('flex shrink-0 items-center gap-1.5 rounded-full border py-1.5 pl-3.5 pr-1.5 text-sm font-medium transition',
-              on ? 'border-primary bg-primary text-primary-foreground' : 'border-white/10 bg-white/[0.03] text-muted-foreground hover:text-foreground')}>
+              on ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-foreground/[0.04] text-muted-foreground hover:text-foreground')}>
             <OptionIcon id={i.id} size="sm" className={cn(!on && 'opacity-80')} />
             {i.label}
           </button>
@@ -53,7 +53,7 @@ function Pills({ items, value, onChange, optional }: { items: readonly Item[]; v
 
 function Seg({ items, value, onChange }: { items: readonly Item[]; value: string; onChange: (v: string) => void }) {
   return (
-    <div className="grid grid-cols-3 rounded-2xl border border-white/10 bg-white/[0.03] p-1">
+    <div className="grid grid-cols-3 rounded-2xl border border-border bg-foreground/[0.04] p-1">
       {items.map((i) => (
         <button key={i.id} type="button" onClick={() => onChange(i.id)} className="relative rounded-xl py-2 text-sm font-bold">
           {value === i.id && <motion.span layoutId="seg" className="absolute inset-0 rounded-xl bg-secondary" transition={{ type: 'spring', stiffness: 400, damping: 30 }} />}
@@ -66,7 +66,7 @@ function Seg({ items, value, onChange }: { items: readonly Item[]; value: string
 
 const Label = ({ n, children }: { n: string; children: React.ReactNode }) => (
   <div className="mb-3 flex items-center gap-2 text-sm font-black">
-    <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-white/[0.06] text-xs text-muted-foreground">{n}</span>{children}
+    <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-secondary text-xs text-secondary-foreground">{n}</span>{children}
   </div>
 );
 
@@ -111,30 +111,30 @@ export default function Home() {
   };
 
   return (
-    <div className="space-y-6 pb-4 md:space-y-8">
+    <div className="space-y-5 pb-4 md:space-y-8">
       <section className="pt-3 text-center md:pt-8">
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
-          className="mx-auto mb-3 inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-bold text-muted-foreground">
+          className="mx-auto mb-3 inline-flex items-center gap-1.5 rounded-full border border-border bg-foreground/[0.04] px-3 py-1 text-xs font-bold text-muted-foreground">
           <Coins className="h-3.5 w-3.5 text-accent" /> {fa(balance)} جواب داری
         </motion.div>
-        <h1 className="text-[2.1rem] font-black leading-tight sm:text-5xl">جواب <span className="text-gradient">چی بدیم؟</span></h1>
+        <h1 className="text-[1.85rem] font-black leading-tight tracking-tight sm:text-5xl">جواب <span className="text-gradient">چی بدیم؟</span></h1>
         <p className="mt-2 text-base text-muted-foreground sm:text-lg">پیامتو بده، یه جواب رو‌دست‌خور بگیر.</p>
       </section>
 
       {balance <= 0 ? <LimitedPanel /> : (
         <motion.form initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} onSubmit={(e) => { e.preventDefault(); run(); }}
-          className="card-soft space-y-7 p-4 sm:p-6 md:p-8">
+          className="card-soft space-y-6 p-4 sm:space-y-7 sm:p-6 md:p-8">
           <div>
             <Label n="۱">طرف چی گفته؟</Label>
-            <div className="relative rounded-2xl border border-white/10 bg-background/60 transition focus-within:border-primary/60 focus-within:shadow-[0_0_0_4px_hsl(var(--primary)/0.12)]">
+            <div className="relative rounded-2xl border border-border bg-muted/40 transition focus-within:border-primary/60 focus-within:shadow-[0_0_0_4px_hsl(var(--primary)/0.12)]">
               <textarea value={text} maxLength={MAX_INPUT} onChange={(e) => setText(e.target.value)} rows={4}
                 placeholder="مثلاً: «باشه هر جور راحتی...»"
                 className="block w-full resize-none bg-transparent p-4 pb-12 text-base leading-7 outline-none placeholder:text-muted-foreground/60" />
               <div className="absolute inset-x-3 bottom-2.5 flex items-center justify-between">
                 <span className="text-xs tabular-nums text-muted-foreground">{fa(text.length)}/{fa(MAX_INPUT)}</span>
                 {text
-                  ? <button type="button" onClick={() => setText('')} className="flex items-center gap-1 rounded-full bg-white/[0.06] px-2.5 py-1 text-xs text-muted-foreground"><X className="h-3.5 w-3.5" />پاک کن</button>
-                  : <button type="button" onClick={paste} className="flex items-center gap-1 rounded-full bg-white/[0.06] px-2.5 py-1 text-xs font-bold text-foreground"><ClipboardPaste className="h-3.5 w-3.5" />چسباندن</button>}
+                  ? <button type="button" onClick={() => setText('')} className="flex items-center gap-1 rounded-full bg-foreground/[0.04] px-2.5 py-1 text-xs text-muted-foreground"><X className="h-3.5 w-3.5" />پاک کن</button>
+                  : <button type="button" onClick={paste} className="flex items-center gap-1 rounded-full bg-foreground/[0.04] px-2.5 py-1 text-xs font-bold text-foreground"><ClipboardPaste className="h-3.5 w-3.5" />چسباندن</button>}
               </div>
             </div>
           </div>
@@ -159,7 +159,7 @@ export default function Home() {
 
       <div ref={resultsRef} className="scroll-mt-20">
         {busy && !result && (
-          <div className="grid gap-4 md:grid-cols-3">{[0, 1, 2].map((i) => <Skeleton key={i} className="h-56 rounded-3xl bg-white/[0.05]" />)}</div>
+          <div className="grid gap-4 md:grid-cols-3">{[0, 1, 2].map((i) => <Skeleton key={i} className="h-56 rounded-3xl bg-foreground/[0.04]" />)}</div>
         )}
         {result && (
           <section className="space-y-4">

@@ -24,7 +24,7 @@ export const DEFAULT_SETTINGS: Settings = {
   referralsEnabled: true,
   refillEnabled: true,
   aiBaseUrl: 'https://router.bynara.id/v1',
-  aiModel: 'gpt-4o-mini',
+  aiModel: 'laguna-s-2.1,stepfun-3.7-flash,gpt-5.6-luna',
   aiTimeoutSec: 30,
   aiMaxRetries: 1,
   repliesPerRequest: 3,

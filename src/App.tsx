@@ -46,8 +46,8 @@ export default function App() {
   const session = useSession();
   useEffect(() => {
     document.documentElement.dir = 'rtl';
-    document.documentElement.classList.add('dark');
-    document.querySelector('meta[name=theme-color]')?.setAttribute('content', '#0c0914');
+    document.documentElement.classList.remove('dark');
+    document.querySelector('meta[name=theme-color]')?.setAttribute('content', '#fff8f5');
     document.documentElement.lang = 'fa';
     document.title = 'رو دست — جواب چی بدیم؟';
   }, []);

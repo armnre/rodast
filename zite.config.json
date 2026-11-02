@@ -1,0 +1,9 @@
+{
+  "id": "hp1wine38g",
+  "accessMode": "external",
+  "envVars": {
+    "ZITE_AI_API_KEY": {
+      "description": "کلید API نارا‌روتر برای تولید جواب‌ها"
+    }
+  }
+}

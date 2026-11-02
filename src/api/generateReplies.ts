@@ -68,7 +68,7 @@ export default createEndpoint({
       baseUrl: cfg.aiBaseUrl, apiKey: process.env.ZITE_AI_API_KEY ?? '', model: cfg.aiModel,
       timeoutMs: cfg.aiTimeoutSec * 1000, maxRetries: cfg.aiMaxRetries,
     });
-    let result: { replies: string[]; tokens: number };
+    let result: { replies: string[]; tokens: number; model: string };
     try {
       result = await runAI(provider, { text, situation: input.situation, tone: input.tone, relationship: input.relationship, length: input.length }, cfg.repliesPerRequest);
     } catch (e) {
@@ -77,7 +77,9 @@ export default createEndpoint({
       console.error('ai failed', kind);
       throw new ZiteError({
         code: 'INTERNAL_ERROR', message: `ai ${kind}`,
-        userFacingMessage: kind === 'TIMEOUT' ? 'جواب دیر رسید. دوباره امتحان کن؛ اعتباری کم نشد.' : 'ساختن جواب نشد. دوباره امتحان کن؛ اعتباری کم نشد.',
+        userFacingMessage: kind === 'TIMEOUT' ? 'جواب دیر رسید. دوباره امتحان کن؛ اعتباری کم نشد.'
+          : kind === 'CREDITS' || kind === 'CONFIG' ? 'سرویس هوش مصنوعی موقتاً در دسترس نیست. کمی بعد امتحان کن؛ اعتباری کم نشد.'
+          : 'ساختن جواب نشد. دوباره امتحان کن؛ اعتباری کم نشد.',
       });
     }
 
@@ -88,7 +90,7 @@ export default createEndpoint({
     await zite.profiles.update({ id: fresh.id, record: { lastSuccessAt: now, totalReplies: (fresh.totalReplies ?? 0) + 1 } });
     await zite.aiRequests.update({
       id: req.id,
-      record: { status: 'Success', repliesJson: JSON.stringify(result.replies), tokensUsed: result.tokens, durationMs: Date.now() - started },
+      record: { status: 'Success', repliesJson: JSON.stringify(result.replies), tokensUsed: result.tokens, model: result.model, durationMs: Date.now() - started },
     });
     await track(input.isRegenerate ? 'reply_regenerated' : 'reply_generated', uid, `${input.situation}/${input.tone}`);
     if (firstReply) {

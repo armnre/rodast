@@ -33,7 +33,7 @@ export default function ReplyCard({ text, tone, index, disabled, onRegenerate, o
         <span className="flex items-center gap-2 text-xs font-bold text-muted-foreground">
           <OptionIcon id={tone} size="sm" />{t?.label}
         </span>
-        <span className="rounded-full border border-white/10 px-2.5 py-0.5 text-[11px] text-muted-foreground">
+        <span className="rounded-full border border-border px-2.5 py-0.5 text-[11px] text-muted-foreground">
           {fa(index + 1)} · {VIBES[index] ?? ''}
         </span>
       </div>

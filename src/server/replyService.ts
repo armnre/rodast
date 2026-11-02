@@ -1,6 +1,6 @@
 import { SITUATIONS, TONES, RELATIONSHIPS, LENGTHS, labelOf } from '../shared/options';
 import type { AIProvider } from './ai';
-import { AIError } from './ai';
+import { AIError, extractJson } from './ai';
 
 const SYSTEM = `تو «رو دست» هستی: حاضرجواب‌ترین، باهوش‌ترین و خوش‌مشرب‌ترین رفیق ایرانی که هر کسی آرزو داره موقع چت کنارش باشه. نسل Z و دهه‌شصتی‌ها رو می‌شناسی، زبون تلگرام و اینستا و واتساپ رو بلدی، و استاد روانشناسی مکالمه، جذابیت و «مخ‌زدن» با کلاسی.
 
@@ -58,15 +58,14 @@ export async function generateReplies(ai: AIProvider, input: ReplyInput, count: 
     `<message>${input.text}</message>`,
   ].filter(Boolean).join('\n');
 
-  const { text, tokens } = await ai.complete([
+  const { text, tokens, model } = await ai.complete([
     { role: 'system', content: SYSTEM },
     { role: 'user', content: user },
   ]);
 
   let replies: string[] = [];
   try {
-    const cleaned = text.replace(/^```(json)?/i, '').replace(/```$/, '').trim();
-    const parsed = JSON.parse(cleaned) as { replies?: ({ text?: string } | string)[] };
+    const parsed = extractJson(text) as { replies?: ({ text?: string } | string)[] };
     replies = (parsed.replies ?? [])
       .map((r) => (typeof r === 'string' ? r : r?.text ?? '').trim().replace(/^["«]|["»]$/g, ''))
       .filter((r) => r.length > 0 && r.length < 600);
@@ -75,5 +74,5 @@ export async function generateReplies(ai: AIProvider, input: ReplyInput, count: 
   }
   replies = Array.from(new Set(replies)).slice(0, count);
   if (replies.length === 0) throw new AIError('INVALID', 'no replies');
-  return { replies, tokens };
+  return { replies, tokens, model };
 }

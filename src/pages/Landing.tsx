@@ -55,7 +55,7 @@ function Install() {
           <span className="inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 text-xs font-bold text-accent"><Download className="h-3.5 w-3.5" />بدون اپ‌استور</span>
           <h2 className="mt-4 text-3xl font-black md:text-4xl">نصبش کن، <span className="text-gradient">همیشه دم دستت</span></h2>
           <p className="mt-3 text-muted-foreground">رو دست مثل یه اپ واقعی روی صفحه‌ی اصلی گوشیت میاد؛ تمام‌صفحه، سریع و بدون حجم اضافه.</p>
-          <div className="mt-6 grid w-full max-w-xs grid-cols-2 rounded-2xl border border-white/10 bg-white/[0.03] p-1">
+          <div className="mt-6 grid w-full max-w-xs grid-cols-2 rounded-2xl border border-border bg-foreground/[0.04] p-1">
             {(['ios', 'android'] as const).map((k) => (
               <button key={k} onClick={() => setOs(k)} className="relative flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-sm font-bold">
                 {os === k && <motion.span layoutId="os" className="absolute inset-0 rounded-xl bg-gradient-brand" />}
@@ -68,7 +68,7 @@ function Install() {
           <ol className="mt-6 space-y-3">
             {STEPS[os].map((s, i) => (
               <motion.li key={os + i} initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.08 }}
-                className="flex items-center gap-4 rounded-2xl border border-white/[0.06] bg-white/[0.03] p-3.5">
+                className="flex items-center gap-4 rounded-2xl border border-border bg-foreground/[0.04] p-3.5">
                 <span className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-brand text-white shadow-lg shadow-primary/30">
                   <s.i className="h-5 w-5" />
                   <span className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-black text-accent-foreground">{['۱', '۲', '۳'][i]}</span>
@@ -93,7 +93,7 @@ export default function Landing() {
   const start = () => nav('/login');
   return (
     <div className="bg-blobs min-h-[100dvh] overflow-x-hidden">
-      <header className="sticky top-0 z-30 border-b border-white/[0.06] bg-background/60 backdrop-blur-2xl" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
+      <header className="sticky top-0 z-30 border-b border-border bg-background/60 backdrop-blur-2xl" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           <Logo size={34} />
           <nav className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
@@ -111,7 +111,7 @@ export default function Landing() {
       <main className="mx-auto max-w-6xl px-4 pb-10 sm:px-6">
         <section className="grid items-center gap-8 py-10 md:grid-cols-2 md:gap-12 md:py-20">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-center md:text-right">
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs font-bold text-muted-foreground sm:text-sm">
+            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-foreground/[0.04] px-3.5 py-1.5 text-xs font-bold text-muted-foreground sm:text-sm">
               <span className="h-2 w-2 animate-pulse rounded-full bg-accent" /> هوش مصنوعی حاضرجواب فارسی
             </span>
             <h1 className="mt-5 text-[2.75rem] font-black leading-[1.15] sm:text-6xl md:text-7xl">جواب چی<br /><span className="text-gradient">بدیم؟</span></h1>
@@ -122,7 +122,7 @@ export default function Landing() {
                   <Sparkles className="ml-2 h-5 w-5" /> ۱۰ جواب رایگان بگیر
                 </Button>
               </motion.div>
-              <Button asChild variant="ghost" size="lg" className="h-14 rounded-2xl border border-white/10"><a href="#install"><Download className="ml-2 h-5 w-5" />نصب روی گوشی</a></Button>
+              <Button asChild variant="ghost" size="lg" className="h-14 rounded-2xl border border-border"><a href="#install"><Download className="ml-2 h-5 w-5" />نصب روی گوشی</a></Button>
             </div>
             <p className="mt-4 text-xs text-muted-foreground">ورود با موبایل · بدون رمز · کمتر از ۳۰ ثانیه</p>
           </motion.div>
@@ -138,7 +138,7 @@ export default function Landing() {
           {SAMPLES.map((s, i) => (
             <motion.div key={i} {...fade} transition={{ delay: i * 0.1 }} className="card-soft p-5">
               <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground"><OptionIcon id={s.tone} size="sm" />{s.label}</div>
-              <div className="mt-3 w-fit max-w-[85%] rounded-2xl rounded-br-md bg-white/[0.06] px-4 py-2 text-sm text-muted-foreground">باشه هر جور راحتی...</div>
+              <div className="mt-3 w-fit max-w-[85%] rounded-2xl rounded-br-md bg-foreground/[0.04] px-4 py-2 text-sm text-muted-foreground">باشه هر جور راحتی...</div>
               <div className="mr-auto mt-2 w-fit max-w-[90%] rounded-2xl rounded-bl-md bg-gradient-brand px-4 py-2.5 font-semibold text-white">{s.text}</div>
               <div className="mt-3 flex items-center gap-1 text-xs text-muted-foreground"><Copy className="h-3.5 w-3.5" /> با یه لمس کپی</div>
             </motion.div>
@@ -150,7 +150,7 @@ export default function Landing() {
           <div className="mt-10 grid gap-4 md:grid-cols-3">
             {HOW.map((h, i) => (
               <motion.div key={i} {...fade} transition={{ delay: i * 0.12 }} className="card-soft relative p-6">
-                <span className="absolute left-5 top-3 text-6xl font-black text-white/[0.04]">{['۱', '۲', '۳'][i]}</span>
+                <span className="absolute left-5 top-3 text-6xl font-black text-foreground/[0.05]">{['۱', '۲', '۳'][i]}</span>
                 <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-brand text-white shadow-lg shadow-primary/30"><h.icon className="h-6 w-6" /></span>
                 <h3 className="mt-4 text-lg font-black">{h.t}</h3>
                 <p className="mt-1 text-sm leading-7 text-muted-foreground">{h.d}</p>
@@ -175,7 +175,7 @@ export default function Landing() {
           <motion.h2 {...fade} className="mb-6 text-center text-3xl font-black">سؤال داری؟</motion.h2>
           <Accordion type="single" collapsible className="card-soft px-5">
             {FAQ.map(([q, a]) => (
-              <AccordionItem key={q} value={q} className="border-white/[0.06] last:border-0"><AccordionTrigger className="text-right font-bold">{q}</AccordionTrigger><AccordionContent className="leading-7 text-muted-foreground">{a}</AccordionContent></AccordionItem>
+              <AccordionItem key={q} value={q} className="border-border last:border-0"><AccordionTrigger className="text-right font-bold">{q}</AccordionTrigger><AccordionContent className="leading-7 text-muted-foreground">{a}</AccordionContent></AccordionItem>
             ))}
           </Accordion>
         </section>
