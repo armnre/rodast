@@ -74,7 +74,7 @@ export class NaraRouterProvider implements AIProvider {
         if (r.ok) return { text: r.text, tokens: r.tokens, model };
         console.error('[nararouter]', model, r.status, r.msg);
 
-        if (r.status === 402) { last = new AIError('CREDITS', r.msg); break; }
+        if (r.status === 402 || /insufficient credit/i.test(r.msg)) { last = new AIError('CREDITS', r.msg); break; }
         if (r.status === 401 || r.status === 403) throw new AIError('CONFIG', r.msg);
         if (r.status === 400 || r.status === 404 || r.status === 422) {
           if (jsonMode) { jsonMode = false; attempt--; continue; } // retry once without JSON mode

@@ -18,7 +18,7 @@ type Item = { id: string; label: string };
 
 function Tiles({ items, value, onChange }: { items: readonly Item[]; value: string; onChange: (v: string) => void }) {
   return (
-    <div className="no-scrollbar -mx-4 flex snap-x gap-2.5 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-4 sm:px-0 lg:grid-cols-7">
+    <div className="no-scrollbar -mx-4 flex min-w-0 snap-x gap-2.5 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-4 sm:overflow-visible sm:px-0 lg:grid-cols-7">
       {items.map((i) => {
         const on = value === i.id;
         return (
@@ -36,12 +36,12 @@ function Tiles({ items, value, onChange }: { items: readonly Item[]; value: stri
 
 function Pills({ items, value, onChange, optional }: { items: readonly Item[]; value?: string; onChange: (v?: string) => void; optional?: boolean }) {
   return (
-    <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:px-0">
+    <div className="flex min-w-0 flex-wrap gap-2">
       {items.map((i) => {
         const on = value === i.id;
         return (
           <button key={i.id} type="button" onClick={() => onChange(on && optional ? undefined : i.id)}
-            className={cn('flex shrink-0 items-center gap-1.5 rounded-full border py-1.5 pl-3.5 pr-1.5 text-sm font-medium transition',
+            className={cn('flex max-w-full items-center gap-1.5 rounded-full border py-1.5 pl-3 pr-1.5 text-[13px] font-medium transition active:scale-95 sm:text-sm',
               on ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-foreground/[0.04] text-muted-foreground hover:text-foreground')}>
             <OptionIcon id={i.id} size="sm" className={cn(!on && 'opacity-80')} />
             {i.label}
@@ -54,11 +54,11 @@ function Pills({ items, value, onChange, optional }: { items: readonly Item[]; v
 
 function Seg({ items, value, onChange }: { items: readonly Item[]; value: string; onChange: (v: string) => void }) {
   return (
-    <div className="grid grid-cols-3 rounded-2xl border border-border bg-foreground/[0.04] p-1">
+    <div className="grid w-full min-w-0 grid-cols-3 rounded-2xl border border-border bg-foreground/[0.04] p-1">
       {items.map((i) => (
-        <button key={i.id} type="button" onClick={() => onChange(i.id)} className="relative rounded-xl py-2 text-sm font-bold">
+        <button key={i.id} type="button" onClick={() => onChange(i.id)} className="relative min-w-0 rounded-xl py-2.5 text-sm font-bold">
           {value === i.id && <motion.span layoutId="seg" className="absolute inset-0 rounded-xl bg-secondary" transition={{ type: 'spring', stiffness: 400, damping: 30 }} />}
-          <span className={cn('relative', value === i.id ? 'text-secondary-foreground' : 'text-muted-foreground')}>{i.label}</span>
+          <span className={cn('relative block truncate', value === i.id ? 'text-secondary-foreground' : 'text-muted-foreground')}>{i.label}</span>
         </button>
       ))}
     </div>
@@ -124,7 +124,7 @@ export default function Home() {
 
       {balance <= 0 ? <LimitedPanel /> : (
         <motion.form initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} onSubmit={(e) => { e.preventDefault(); run(); }}
-          className="card-soft space-y-6 p-4 sm:space-y-7 sm:p-6 md:p-8">
+          className="card-soft min-w-0 [overflow-x:clip] space-y-6 p-4 sm:space-y-7 sm:p-6 md:p-8">
           <div>
             <Label n="۱">طرف چی گفته؟</Label>
             <div className="relative rounded-2xl border border-border bg-muted/40 transition focus-within:border-primary/60 focus-within:shadow-[0_0_0_4px_hsl(var(--primary)/0.12)]">
@@ -141,9 +141,9 @@ export default function Home() {
           </div>
           <div><Label n="۲">موقعیت</Label><Tiles items={SITUATIONS} value={situation} onChange={setSituation} /></div>
           <div><Label n="۳">لحن جواب</Label><Pills items={TONES} value={tone} onChange={(v) => v && setTone(v)} /></div>
-          <div className="grid gap-7 md:grid-cols-[1fr_auto] md:items-start">
-            <div><Label n="۴">طرف کیه؟ <span className="font-normal text-muted-foreground">(اختیاری)</span></Label><Pills items={RELATIONSHIPS} value={relationship} onChange={setRelationship} optional /></div>
-            <div className="md:w-64"><Label n="۵">طول جواب</Label><Seg items={LENGTHS} value={length} onChange={setLength} /></div>
+          <div className="grid min-w-0 gap-6 md:grid-cols-[minmax(0,1fr)_16rem] md:items-start">
+            <div className="min-w-0"><Label n="۴">طرف کیه؟ <span className="font-normal text-muted-foreground">(اختیاری)</span></Label><Pills items={RELATIONSHIPS} value={relationship} onChange={setRelationship} optional /></div>
+            <div className="min-w-0"><Label n="۵">طول جواب</Label><Seg items={LENGTHS} value={length} onChange={setLength} /></div>
           </div>
 
           <div className="sticky bottom-[5.5rem] z-20 -mx-1 md:static md:mx-0">
