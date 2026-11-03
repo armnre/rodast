@@ -9,7 +9,7 @@ export default createEndpoint({
   description: 'Updates the signed-in user profile (name, username, avatar, bio, vibe)',
   inputSchema: z.object({
     token: z.string(), displayName: z.string(), username: z.string(),
-    avatar: z.string().optional(), bio: z.string().optional(), vibe: z.string().optional(),
+    avatar: z.string().optional(), bio: z.string().optional(), vibe: z.string().optional(), cover: z.string().optional(),
   }),
   outputSchema: z.object({ ok: z.boolean() }),
   execute: async ({ input }) => {
@@ -29,7 +29,9 @@ export default createEndpoint({
       const other = await zite.profiles.findOne({ filters: { username } });
       if (other && other.id !== p.id) throw new ZiteError({ code: 'CONFLICT', message: 'taken', userFacingMessage: 'این نام کاربری قبلاً گرفته شده.' });
     }
-    await zite.profiles.update({ id: p.id, record: { displayName, username, avatar, bio, vibe } });
+    const cover = input.cover !== undefined ? input.cover : p.cover ?? '';
+    if (cover && !/^https:\/\/(eu-)?uploads\.zite\.com\//.test(cover)) throw new ZiteError({ code: 'BAD_REQUEST', message: 'cover', userFacingMessage: 'تصویر کاور معتبر نیست.' });
+    await zite.profiles.update({ id: p.id, record: { displayName, username, avatar, bio, vibe, cover } });
     return { ok: true };
   },
 });

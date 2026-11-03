@@ -221,5 +221,6 @@ export function serializeProfile(p: Profile) {
     avatar: p.avatar ?? '',
     bio: p.bio ?? '',
     vibe: p.vibe ?? '',
+    cover: p.cover ?? '',
   };
 }

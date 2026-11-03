@@ -3,7 +3,7 @@ import { requireSession } from '../server/session';
 import { createEndpoint, ZiteError } from 'zitejs/backend';
 import { zite } from 'zitejs/db';
 import { applyLedger, completeReferral, getSettings, quotaView, requireProfile, syncQuota, track } from '../server/credits';
-import { NaraRouterProvider, AIError } from '../server/ai';
+import { NaraRouterProvider, ZiteAIProvider, ChainProvider, AIError } from '../server/ai';
 import { generateReplies as runAI } from '../server/replyService';
 import { SITUATIONS, TONES, RELATIONSHIPS, LENGTHS, MAX_INPUT } from '../shared/options';
 
@@ -66,10 +66,13 @@ export default createEndpoint({
     }
 
     const started = Date.now();
-    const provider = new NaraRouterProvider({
-      baseUrl: cfg.aiBaseUrl, apiKey: process.env.ZITE_AI_API_KEY ?? '', model: cfg.aiModel,
-      timeoutMs: cfg.aiTimeoutSec * 1000, maxRetries: cfg.aiMaxRetries,
-    });
+    const provider = new ChainProvider([
+      new NaraRouterProvider({
+        baseUrl: cfg.aiBaseUrl, apiKey: process.env.ZITE_AI_API_KEY ?? '', model: cfg.aiModel.split(',').slice(0, 2).join(','),
+        timeoutMs: Math.min(cfg.aiTimeoutSec, 8) * 1000, maxRetries: 0,
+      }),
+      new ZiteAIProvider(),
+    ]);
     let result: { replies: string[]; tokens: number; model: string };
     try {
       result = await runAI(provider, { text, situation: input.situation, tone: input.tone, relationship: input.relationship, length: input.length }, cfg.repliesPerRequest);

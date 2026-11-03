@@ -12,6 +12,13 @@ import Invite from './pages/Invite';
 import Profile from './pages/Profile';
 import Terms from './pages/Terms';
 import Admin from './pages/Admin';
+import Feed from './pages/Feed';
+import Explore from './pages/Explore';
+import Compose from './pages/Compose';
+import Notifications from './pages/Notifications';
+import UserProfile from './pages/UserProfile';
+import PostPage from './pages/PostPage';
+import Bookmarks from './pages/Bookmarks';
 import Layout from './components/Layout';
 import Splash from './components/Splash';
 import Blocked from './components/Blocked';
@@ -35,6 +42,14 @@ function SignedIn() {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/reply" element={<Home />} />
+        <Route path="/feed" element={<Feed />} />
+        <Route path="/explore" element={<Explore />} />
+        <Route path="/compose" element={<Compose />} />
+        <Route path="/notifications" element={<Notifications />} />
+        <Route path="/u/:username" element={<UserProfile />} />
+        <Route path="/post/:id" element={<PostPage />} />
+        <Route path="/bookmarks" element={<Bookmarks />} />
         <Route path="/history" element={<History />} />
         <Route path="/invite" element={<Invite />} />
         <Route path="/profile" element={<Profile />} />

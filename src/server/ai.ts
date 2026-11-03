@@ -1,3 +1,4 @@
+import { zite } from 'zitejs/db';
 // AI provider abstraction. Business logic only talks to `AIProvider`.
 
 export type ChatMessage = { role: 'system' | 'user' | 'assistant'; content: string };
@@ -96,6 +97,41 @@ export class NaraRouterProvider implements AIProvider {
         last = r.status === -1 ? new AIError('TIMEOUT', 'timeout') : new AIError(r.status === 0 && r.msg === 'empty' ? 'INVALID' : 'PROVIDER', r.msg);
         if (attempt < this.cfg.maxRetries) await new Promise((ok) => setTimeout(ok, 500 * 2 ** attempt));
       }
+    }
+    throw last;
+  }
+}
+
+/** Built-in Zite AI via a database AI field (no external key). */
+export class ZiteAIProvider implements AIProvider {
+  constructor(private timeoutMs = 60000) {}
+  async complete(messages: ChatMessage[]): Promise<AIResult> {
+    const prompt = messages.map((m) => (m.role === 'system' ? m.content : `---\n${m.content}`)).join('\n\n')
+      + '\n\nفقط و فقط JSON خروجی بده، بدون هیچ متن اضافه.';
+    const created = (await zite.aiJobs.create({ record: { prompt } })) as unknown as { id?: string; record?: { id: string } };
+    const id = created.id ?? created.record?.id ?? '';
+    const end = Date.now() + this.timeoutMs;
+    try {
+      while (Date.now() < end) {
+        await new Promise((ok) => setTimeout(ok, 1200));
+        const got = (await zite.aiJobs.findOne({ id })) as unknown as { output?: string; record?: { output?: string } };
+        const out = (got?.output ?? got?.record?.output ?? '').trim();
+        if (out) return { text: out, tokens: 0, model: 'zite-ai' };
+      }
+      throw new AIError('TIMEOUT', 'zite ai timeout');
+    } finally {
+      zite.aiJobs.delete({ id }).catch(() => {});
+    }
+  }
+}
+
+/** Tries each provider in order; returns the first success. */
+export class ChainProvider implements AIProvider {
+  constructor(private providers: AIProvider[]) {}
+  async complete(messages: ChatMessage[]): Promise<AIResult> {
+    let last: unknown = new AIError('PROVIDER', 'failed');
+    for (const p of this.providers) {
+      try { return await p.complete(messages); } catch (e) { last = e; }
     }
     throw last;
   }

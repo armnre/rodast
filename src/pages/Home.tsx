@@ -1,3 +1,4 @@
+import { useSearchParams } from 'react-router-dom';
 import { tok } from '../lib/session';
 import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
@@ -15,6 +16,13 @@ import OptionIcon from '../components/OptionIcon';
 import { CoinArt } from '../components/Art';
 
 type Item = { id: string; label: string };
+
+const EXAMPLES = [
+  { t: 'باشه هر جور راحتی...', s: 'rescue' },
+  { t: 'چرا دیر جواب میدی؟', s: 'flirt' },
+  { t: 'استوری گذاشته از سفر شمال', s: 'story' },
+  { t: 'جمعه بیا جلسه، ساعت ۸ صبح', s: 'formal' },
+];
 
 function Tiles({ items, value, onChange }: { items: readonly Item[]; value: string; onChange: (v: string) => void }) {
   return (
@@ -73,7 +81,8 @@ const Label = ({ n, children }: { n: string; children: React.ReactNode }) => (
 
 export default function Home() {
   const { me, setQuota } = useMe();
-  const [text, setText] = useState('');
+  const [sp] = useSearchParams();
+  const [text, setText] = useState(() => sp.get('text') ?? '');
   const [situation, setSituation] = useState('flirt');
   const [tone, setTone] = useState('funny');
   const [relationship, setRelationship] = useState<string | undefined>();
@@ -118,7 +127,7 @@ export default function Home() {
           className="mx-auto mb-3 inline-flex items-center gap-1.5 rounded-full border border-border bg-foreground/[0.04] px-3 py-1 text-xs font-bold text-muted-foreground">
           <CoinArt className="h-5 w-5" /> {fa(balance)} جواب داری
         </motion.div>
-        <h1 className="text-[1.85rem] font-black leading-tight tracking-tight sm:text-5xl">جواب <span className="text-gradient">چی بدیم؟</span></h1>
+        <h1 className="text-[2.1rem] font-black leading-tight tracking-tight sm:text-6xl">جواب <span className="text-gradient">چی بدیم؟</span></h1>
         <p className="mt-2 text-base text-muted-foreground sm:text-lg">پیامتو بده، یه جواب رو‌دست‌خور بگیر.</p>
       </section>
 
@@ -139,6 +148,15 @@ export default function Home() {
               </div>
             </div>
           </div>
+          {!text && (
+            <div className="-mt-3 flex flex-wrap gap-2">
+              <span className="py-1 text-xs text-muted-foreground">امتحان کن:</span>
+              {EXAMPLES.map((e) => (
+                <button key={e.t} type="button" onClick={() => { setText(e.t); setSituation(e.s); }}
+                  className="rounded-full border border-dashed border-primary/40 bg-primary/5 px-3 py-1 text-xs font-medium text-foreground transition hover:bg-primary/10 active:scale-95">«{e.t}»</button>
+              ))}
+            </div>
+          )}
           <div><Label n="۲">موقعیت</Label><Tiles items={SITUATIONS} value={situation} onChange={setSituation} /></div>
           <div><Label n="۳">لحن جواب</Label><Pills items={TONES} value={tone} onChange={(v) => v && setTone(v)} /></div>
           <div className="grid min-w-0 gap-6 md:grid-cols-[minmax(0,1fr)_16rem] md:items-start">

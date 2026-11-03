@@ -102,7 +102,7 @@ export default function History() {
         <div className="card-soft flex flex-col items-center p-8 text-center">
           <p className="font-display text-lg">هنوز جوابی نساختی</p>
           <p className="mt-1 text-sm text-muted-foreground">اولین پیام رو بده تا رودستی‌ترین جواب‌ها اینجا جمع بشن.</p>
-          <Button onClick={() => nav('/')} className="mt-4 rounded-xl bg-gradient-brand">بریم جواب بسازیم</Button>
+          <Button onClick={() => nav('/reply')} className="mt-4 rounded-xl bg-gradient-brand">بریم جواب بسازیم</Button>
         </div>
       ) : groups.length === 0 ? (
         <p className="card-soft p-8 text-center text-sm text-muted-foreground">چیزی پیدا نشد.</p>

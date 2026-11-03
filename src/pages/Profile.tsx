@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { updateProfile, deleteAccount } from 'zitejs/api';
 import { toast } from 'sonner';
-import { Loader2, LogOut, Gift, Sparkles, MessageSquareText, Coins, ChevronLeft, ShieldCheck, Trash2, FileText, Copy, Phone, CalendarDays, Shield } from 'lucide-react';
+import { Loader2, LogOut, Gift, Sparkles, MessageSquareText, Coins, ChevronLeft, ShieldCheck, Trash2, FileText, Copy, Phone, CalendarDays, Shield, UserRound, Bookmark } from 'lucide-react';
 import { Button } from '@project/components/ui/button';
 import { Input } from '@project/components/ui/input';
 import { Textarea } from '@project/components/ui/textarea';
@@ -15,6 +15,7 @@ import { errMsg, fa, faDate, useMe } from '../lib/me';
 import AvatarImg from '../components/AvatarImg';
 import AvatarPicker from '../components/AvatarPicker';
 import { VIBES } from '../shared/avatars';
+import CoverPicker from '../components/social/CoverPicker';
 
 const LEVELS = [{ n: 0, t: 'تازه‌کار' }, { n: 10, t: 'حاضرجواب' }, { n: 50, t: 'استاد رودست' }, { n: 150, t: 'افسانه' }];
 
@@ -27,6 +28,7 @@ export default function Profile() {
   const [bio, setBio] = useState(p?.bio ?? '');
   const [vibe, setVibe] = useState(p?.vibe ?? '');
   const [avatar, setAvatar] = useState(p?.avatar ?? '');
+  const [cover, setCover] = useState(p?.cover ?? '');
   const [busy, setBusy] = useState(false);
   if (!p) return null;
 
@@ -40,7 +42,7 @@ export default function Profile() {
     if (dn.trim().length < 2) return toast.error('نام نمایشی کوتاهه.');
     if (!/^[a-z0-9_]{3,20}$/.test(un)) return toast.error('نام کاربری فقط حروف انگلیسی کوچک، عدد و _ (۳ تا ۲۰).');
     setBusy(true);
-    try { await updateProfile({ token: tok(), displayName: dn, username: un, bio, vibe, avatar }); await refresh(); toast.success('پروفایلت به‌روز شد ✨'); }
+    try { await updateProfile({ token: tok(), displayName: dn, username: un, bio, vibe, avatar, cover }); await refresh(); toast.success('پروفایلت به‌روز شد ✨'); }
     catch (e) { toast.error(errMsg(e)); } finally { setBusy(false); }
   };
   const remove = async () => {
@@ -83,6 +85,8 @@ export default function Profile() {
 
       {/* Quick links */}
       <div className="card-soft divide-y divide-border/60 overflow-hidden">
+        <Row icon={UserRound} label="پروفایل عمومی من" onClick={() => nav(`/u/${p.username}`)} />
+        <Row icon={Bookmark} label="پست‌های ذخیره‌شده" onClick={() => nav('/bookmarks')} />
         <Row icon={Gift} label="دعوت دوستان و هدیه گرفتن" onClick={() => nav('/invite')} />
         <Row icon={Sparkles} label="تاریخچه‌ی جواب‌ها" onClick={() => nav('/history')} />
         <Row icon={FileText} label="قوانین و حریم خصوصی" onClick={() => nav('/terms')} />
@@ -92,6 +96,7 @@ export default function Profile() {
       {/* Edit */}
       <div className="card-soft space-y-5 p-5 sm:p-6">
         <div><h2 className="font-display text-lg">ویرایش پروفایل</h2><p className="text-xs text-muted-foreground">یه آواتار انتخاب کن و خودتو معرفی کن.</p></div>
+        <div className="space-y-2"><Label>تصویر کاور</Label><CoverPicker value={cover} onChange={setCover} /></div>
         <div className="space-y-2"><Label>آواتار</Label><AvatarPicker value={avatar} onChange={setAvatar} /></div>
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-1.5"><Label>نام نمایشی</Label><Input value={dn} maxLength={30} onChange={(e) => setDn(e.target.value)} className="h-11 rounded-xl" /></div>
