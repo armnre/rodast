@@ -14,6 +14,7 @@ import FeedList, { Empty } from '../components/social/FeedList';
 import { tok } from '../lib/session';
 import { fa, faDate } from '../lib/me';
 import { compact, onErr, useFeed } from '../lib/social';
+import VerifiedBadge from '../components/VerifiedBadge';
 
 type Prof = GetUserProfileOutputType;
 
@@ -113,7 +114,7 @@ export default function UserProfile() {
         </div>
         {!p ? <div className="mt-3 space-y-2 pb-4"><Skeleton className="h-6 w-40" /><Skeleton className="h-4 w-24" /><Skeleton className="h-4 w-full" /></div> : (
           <div className="mt-3 pb-4">
-            <h1 className="text-xl font-black">{p.displayName}</h1>
+            <h1 className="flex items-center gap-1.5 text-xl font-black">{p.displayName}<VerifiedBadge show={p.verified} /></h1>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span dir="ltr">@{p.username}</span>
               {p.followsMe && !p.isMe && <span className="rounded-md bg-muted px-1.5 py-0.5 text-[11px] font-semibold">دنبالت می‌کنه</span>}

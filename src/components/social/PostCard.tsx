@@ -11,6 +11,7 @@ import RichText from './RichText';
 import MediaGrid from './MediaGrid';
 import PostMenu from './PostMenu';
 import { compact, runAction, timeAgo, type Post } from '../../lib/social';
+import VerifiedBadge from '../VerifiedBadge';
 
 type Patch = (id: string, fn: (p: Post) => Post | null) => void;
 
@@ -24,7 +25,7 @@ function Embedded({ post }: { post: NonNullable<Post['ref']> }) {
       className="mt-3 cursor-pointer rounded-2xl border border-border/80 p-3 transition hover:bg-muted/40">
       <div className="flex items-center gap-2 text-sm">
         <AvatarImg id={post.author.avatar} name={post.author.displayName} className="size-5 ring-0" />
-        <span className="font-bold">{post.author.displayName}</span>
+        <span className="font-bold">{post.author.displayName}</span><VerifiedBadge show={post.author.verified} />
         <span className="text-muted-foreground" dir="ltr">@{post.author.username}</span>
       </div>
       {post.body && <RichText text={post.body} className="mt-1.5 line-clamp-4 whitespace-pre-wrap break-anywhere text-[15px] leading-7" />}
@@ -75,7 +76,7 @@ export default function PostCard({ post: item, patch, focus }: { post: Post; pat
         </Link>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5 text-[15px]">
-            <Link to={`/u/${post.author.username}`} onClick={(e) => e.stopPropagation()} className="truncate font-bold hover:underline">{post.author.displayName}</Link>
+            <Link to={`/u/${post.author.username}`} onClick={(e) => e.stopPropagation()} className="truncate font-bold hover:underline">{post.author.displayName}</Link><VerifiedBadge show={post.author.verified} />
             <span className="truncate text-muted-foreground" dir="ltr">@{post.author.username}</span>
             <span className="text-muted-foreground">·</span>
             <time className="shrink-0 text-[13px] text-muted-foreground" dateTime={post.createdAt}>{timeAgo(post.createdAt)}</time>

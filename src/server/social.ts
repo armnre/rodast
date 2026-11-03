@@ -79,7 +79,7 @@ export async function rateLimit(uid: string, n = 8) {
 
 export type PostView = {
   id: string; body: string; kind: string; parentId: string; refId: string; media: Media[]; status: string; createdAt: string;
-  author: { id: string; displayName: string; username: string; avatar: string };
+  author: { id: string; displayName: string; username: string; avatar: string; verified: boolean };
   likes: number; replies: number; reposts: number; liked: boolean; bookmarked: boolean; reposted: boolean; mine: boolean;
   ref: PostView | null; parentAuthor: string;
 };
@@ -89,7 +89,7 @@ async function hydrateRaw(ids: string[], uid: string): Promise<PostView[]> {
   const r = await zite.sql({
     query: `
       SELECT p.id, p."body", p."authorId", p."kind", p."parentId", p."refId", p."media", p."status", p.created_at AS "createdAt",
-        a."displayName", a."username", a."avatar",
+        a."displayName", a."username", a."avatar", a."isVerified",
         (SELECT pa."username" FROM "Posts" pp JOIN "Profiles" pa ON pa."ownerId" = pp."authorId" WHERE pp.id::text = p."parentId" LIMIT 1) AS "parentAuthor",
         (SELECT COUNT(*) FROM "PostLikes" l WHERE l."postId" = p.id::text) AS "likeCount",
         (SELECT COUNT(*) FROM "Posts" r WHERE r."parentId" = p.id::text AND r."kind" = 'Reply' AND r."status" = 'Active') AS "replyCount",
@@ -109,7 +109,7 @@ async function hydrateRaw(ids: string[], uid: string): Promise<PostView[]> {
       id: String(x.id), kind: String(x.kind ?? 'Post'), parentId: String(x.parentId ?? ''), refId: String(x.refId ?? ''),
       body: alive ? String(x.body ?? '') : '', media: alive ? parseMedia(x.media) : [], status: String(x.status ?? 'Active'),
       createdAt: String(x.createdAt ?? ''),
-      author: { id: String(x.authorId ?? ''), displayName: String(x.displayName ?? 'کاربر'), username: String(x.username ?? ''), avatar: String(x.avatar ?? '') },
+      author: { id: String(x.authorId ?? ''), displayName: String(x.displayName ?? 'کاربر'), username: String(x.username ?? ''), avatar: String(x.avatar ?? ''), verified: x.isVerified === true },
       likes: Number(x.likeCount ?? 0), replies: Number(x.replyCount ?? 0), reposts: Number(x.repostCount ?? 0),
       liked: x.isLiked === true, bookmarked: x.isBookmarked === true, reposted: x.isReposted === true, mine: x.authorId === uid,
       ref: null, parentAuthor: String(x.parentAuthor ?? ''),

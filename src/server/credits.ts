@@ -222,5 +222,7 @@ export function serializeProfile(p: Profile) {
     bio: p.bio ?? '',
     vibe: p.vibe ?? '',
     cover: p.cover ?? '',
+    verified: p.isVerified === true,
+    premium: p.isPremium === true,
   };
 }

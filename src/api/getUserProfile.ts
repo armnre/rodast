@@ -7,7 +7,7 @@ export default createEndpoint({
   description: 'Returns a public profile with follow counts and relationship to the viewer',
   inputSchema: z.object({ token: z.string(), username: z.string() }),
   outputSchema: z.object({
-    id: z.string(), displayName: z.string(), username: z.string(), avatar: z.string(), bio: z.string(), cover: z.string(), vibe: z.string(),
+    id: z.string(), displayName: z.string(), username: z.string(), avatar: z.string(), verified: z.boolean(), bio: z.string(), cover: z.string(), vibe: z.string(),
     joinedAt: z.string(), followers: z.number(), following: z.number(), posts: z.number(),
     isMe: z.boolean(), iFollow: z.boolean(), followsMe: z.boolean(), iBlocked: z.boolean(), blockedMe: z.boolean(),
   }),
@@ -30,7 +30,7 @@ export default createEndpoint({
     const x = (r.rows[0] ?? {}) as Record<string, unknown>;
     const blockedMe = x.blockedMe === true;
     return {
-      id: t, displayName: p.displayName ?? '', username: p.username ?? '', avatar: p.avatar ?? '',
+      id: t, displayName: p.displayName ?? '', username: p.username ?? '', avatar: p.avatar ?? '', verified: p.isVerified === true,
       bio: blockedMe ? '' : p.bio ?? '', cover: blockedMe ? '' : p.cover ?? '', vibe: p.vibe ?? '',
       joinedAt: String(p.joinedAt ?? ''),
       followers: Number(x.followers ?? 0), following: Number(x.following ?? 0), posts: Number(x.posts ?? 0),
