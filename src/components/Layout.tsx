@@ -68,10 +68,12 @@ function BottomNav({ unread }: { unread: number }) {
     <nav className="pb-safe fixed inset-x-0 bottom-0 z-40 md:hidden">
       <div className="mx-auto mb-3 flex w-[calc(100%-1.5rem)] max-w-sm items-center justify-between rounded-full border border-white/60 bg-card/85 p-1.5 shadow-[0_18px_50px_-14px_rgb(120_40_30/0.45),inset_0_1px_0_rgb(255_255_255/0.8)] backdrop-blur-2xl">
         {NAV.map((n) => n.to === '/' ? (
-          <NavLink key={n.to} to={n.to} end aria-label={n.label} className="grid flex-1 place-items-center">
-            <motion.span whileTap={{ scale: 0.85 }} className="grid size-12 place-items-center rounded-full bg-gradient-brand text-white shadow-lg shadow-primary/40">
-              <Sparkles className="size-6" strokeWidth={2.4} />
+          <NavLink key={n.to} to={n.to} end aria-label={n.label} className="relative -mt-7 grid flex-1 place-items-center">
+            <motion.span whileTap={{ scale: 0.85 }} className="relative grid size-[58px] place-items-center rounded-full bg-gradient-brand text-white shadow-xl shadow-primary/50 ring-4 ring-background">
+              <motion.span className="absolute inset-0 rounded-full bg-primary/40" animate={{ scale: [1, 1.35], opacity: [0.6, 0] }} transition={{ repeat: Infinity, duration: 1.8 }} />
+              <Sparkles className="relative size-6" strokeWidth={2.4} />
             </motion.span>
+            <span className="mt-0.5 text-[10px] font-black text-primary">جواب با AI</span>
           </NavLink>
         ) : (
           <NavLink key={n.to} to={n.to} end aria-label={n.label} className="relative flex-1">

@@ -123,12 +123,26 @@ export default function Home() {
   return (
     <div className="space-y-5 pb-4 md:space-y-8">
       <section className="pt-3 text-center md:pt-8">
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
-          className="mx-auto mb-3 inline-flex items-center gap-1.5 rounded-full border border-border bg-foreground/[0.04] px-3 py-1 text-xs font-bold text-muted-foreground">
-          <CoinArt className="h-5 w-5" /> {fa(balance)} جواب داری
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="mb-4 flex flex-wrap items-center justify-center gap-2">
+          <span className="relative inline-flex items-center gap-1.5 overflow-hidden rounded-full bg-gradient-brand px-3.5 py-1.5 text-xs font-black text-white shadow-lg shadow-primary/30">
+            <motion.span animate={{ rotate: [0, 18, -12, 0], scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 2.4 }}><Sparkles className="size-3.5" /></motion.span>
+            دستیار هوش مصنوعی رو دست
+            <motion.span className="absolute inset-y-0 w-10 -skew-x-12 bg-white/30" animate={{ x: ['-150%', '450%'] }} transition={{ repeat: Infinity, duration: 2.8, ease: 'easeInOut' }} />
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-bold text-muted-foreground">
+            <CoinArt className="h-4 w-4" /> {fa(balance)} جواب داری
+          </span>
         </motion.div>
         <h1 className="text-[2.1rem] font-black leading-tight tracking-tight sm:text-6xl">جواب <span className="text-gradient">چی بدیم؟</span></h1>
-        <p className="mt-2 text-base text-muted-foreground sm:text-lg">پیامتو بده، یه جواب رو‌دست‌خور بگیر.</p>
+        <p className="mt-2 text-base text-muted-foreground sm:text-lg">پیامتو بده، هوش مصنوعی سه تا جواب رو‌دست‌خور برات می‌سازه.</p>
+        <div className="mx-auto mt-5 grid max-w-lg grid-cols-3 gap-2 text-[11px] font-bold sm:text-xs">
+          {[['۱', 'پیامو بچسبون'], ['۲', 'لحن رو انتخاب کن'], ['۳', 'کپی کن و بفرست']].map(([n, t], i) => (
+            <motion.div key={n} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }}
+              className="flex flex-col items-center gap-1.5 rounded-2xl border border-border/70 bg-card/80 px-2 py-3 backdrop-blur">
+              <span className="grid size-7 place-items-center rounded-full bg-primary/10 text-sm font-black text-primary">{n}</span>{t}
+            </motion.div>
+          ))}
+        </div>
       </section>
 
       {balance <= 0 ? <LimitedPanel /> : (

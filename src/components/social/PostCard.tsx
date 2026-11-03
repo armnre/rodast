@@ -1,5 +1,6 @@
 import { useNavigate, Link } from 'react-router-dom';
-import { Heart, MessageCircle, Repeat2, Share, Quote, Repeat } from 'lucide-react';
+import { Heart, MessageCircle, Repeat2, Share, Quote, Repeat }  from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 import {
@@ -107,6 +108,12 @@ export default function PostCard({ post: item, patch, focus }: { post: Post; pat
             </DropdownMenu>
             <Action icon={Heart} label="پسند" n={post.likes} active={post.liked} color="text-primary" onClick={() => runAction(post, post.liked ? 'unlike' : 'like', patch)} />
             <Action icon={Share} label="اشتراک" color="" onClick={share} />
+            {!post.mine && post.body && (
+              <button aria-label="جواب با هوش مصنوعی" onClick={(e) => { e.stopPropagation(); nav(`/?text=${encodeURIComponent(post.body.slice(0, 400))}`); }}
+                className="flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-[11px] font-black text-primary transition hover:bg-primary/15 active:scale-95">
+                <Sparkles className="size-3.5" />AI
+              </button>
+            )}
           </div>
         </div>
       </div>
